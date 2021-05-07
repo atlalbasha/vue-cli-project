@@ -1,10 +1,12 @@
 <template>
   <div id="app">
     <div id="nav">
+      <b-icon icon="hexagon"></b-icon> |
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
+      <router-link to="/contact">Contact</router-link>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -14,7 +16,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: seashell;
 }
 
 #nav {
@@ -23,10 +25,10 @@
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: seashell;
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: salmon;
 }
 </style>
