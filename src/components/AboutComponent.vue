@@ -4,9 +4,8 @@
       <b-icon icon="hexagon" rotate="90" style="width: 45; height: 45;"></b-icon
       >About Page
     </h1>
-
-    <div><img :src="imageLink" /></div>
-
+    <hr />
+    <hr />
     <b-form-checkbox-group
       stacked
       v-model="selected"
@@ -23,7 +22,6 @@
 export default {
   data() {
     return {
-      imageLink: "https://source.unsplash.com/collection/1653544/710x710", //"../assets/logo.png",
       selected: [
         "1",
         "2",

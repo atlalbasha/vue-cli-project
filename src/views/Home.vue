@@ -1,6 +1,12 @@
 <template>
+  <!--  <div class="home">
+    <img alt="Vue logo" src="../assets/logo.png" />
+    <HelloWorld msg="Welcome to Your Vue.js App" />
+  </div> -->
+
   <div>
-    <HomeComponent></HomeComponent>
+    <HomeComponent @event="showError"></HomeComponent>
+    <h3>{{ Error }}</h3>
   </div>
 </template>
 
@@ -15,9 +21,17 @@ export default {
     // HelloWorld,
     HomeComponent,
   },
-  created() {
-    // this.$root.$refs.HomeComponent.getApi();
+  created() {},
+  data() {
+    return {
+      Error: null,
+    };
   },
-  methods: {},
+  methods: {
+    showError(error) {
+      console.log(error);
+      this.Error = error.Error;
+    },
+  },
 };
 </script>

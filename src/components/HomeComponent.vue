@@ -1,93 +1,142 @@
 <template>
-  <div>
+  <div class="container-fluid">
     <h1>
-      <b-icon icon="hexagon" style="width: 45; height: 45;"></b-icon>Home Page
+      <b-icon icon="hexagon" style="width: 45; height: 45;"></b-icon> Movies
+      Home
     </h1>
 
+    <hr />
     <b-form inline class="d-flex justify-content-center">
       <b-form-input
         v-model="newText"
         class="mb-2 mr-sm-2 mb-sm-0 "
-        placeholder="Add New Value"
+        placeholder="Search for Movies info"
       ></b-form-input>
 
-      <b-button @click="addNewApiValue(newText)" variant="primary"
-        >Save</b-button
+      <b-button type="submit" @click="fetchMovies(newText)" variant="primary"
+        >Search</b-button
       >
     </b-form>
-    <p>{{ newText }}</p>
-    <p>computed function: "{{ initials }}"</p>
-    <p>watch function: "{{ newText }}"</p>
-    <dl v-if="listApi">
-      <li v-for="(item, index) in listApi" :key="index">
-        <dt>{{ item.title }}</dt>
-        <dd>{{ item.body }}</dd>
+    <hr />
+    <!--   <p>computed function: "{{ initials }}"</p>
+    <p>watch function: "{{ newText }}"</p> -->
+
+    <div v-if="movies">
+      <div v-if="movies.Response === 'True'">
+        <hr />
+        <img :src="movies.Poster || 'favicon.ico'" />
+        <i class="far fa-hexagon"></i>
+        <hr />
+        <h3>{{ movies.Title }}</h3>
+
+        <span v-for="movie in movies.Ratings" :key="movie.Source">
+          <p>Ratings Source: {{ movie.Source }} {{ movie.Value }}</p>
+        </span>
+
         <br />
-      </li>
-    </dl>
-    <p v-else>Laddar...</p>
+        <b-form-rating
+          variant="danger"
+          id="rating-inline"
+          inline
+          :value="movies.imdbRating / 2"
+          readonly
+        ></b-form-rating>
+        <p class="mt-2">IMDB Rating: {{ movies.imdbRating }}</p>
+
+        <p>Released: {{ movies.Released }}</p>
+        <p>Runtime: {{ movies.Runtime }}</p>
+        <p>Genre: {{ movies.Genre }}</p>
+        <p>Actors: {{ movies.Actors }}</p>
+        <p>Plot: {{ movies.Plot }}</p>
+        <p>Language: {{ movies.Language }}</p>
+        <p>Awards: {{ movies.Awards }}</p>
+
+        <!-- Rating -->
+        <div>
+          <label for="rating-inline">Rate This Film: {{ ratingValue }}</label>
+          <br />
+          <b-form-rating
+            variant="danger"
+            id="rating-inline"
+            inline
+            v-model="ratingValue"
+          ></b-form-rating>
+          <p class="mt-2">Your Rating</p>
+        </div>
+        <!--  -->
+      </div>
+      <!-- <div v-else>{{ movies.Error }}</div> -->
+      <span v-else>Sorry...</span>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   watch: {
+    ratingValue() {
+      this.$store.commit("addRatings", this.ratingValue);
+      return this.$store.state.rateMovie;
+    },
     newText() {
-      console.log(` ${this.newText} `);
+      // console.log(` ${this.newText} `);
     },
   },
   computed: {
     initials() {
-      return this.newText
+      return this.$store.state.rateMovie;
+      /* this.newText
         .split(" ") // ['Atlal', 'Basha']
         .map((name) => name.charAt(0)) // ['A', 'B']
-        .join("."); // 'A.B'
+        .join("."); // 'A.B' */
     },
   },
   created() {
-    this.$root.$refs.HomeComponent = this;
-    this.getApi();
+    this.fetchMovies();
   },
   data() {
     return {
-      listApi: [],
-      title: String,
-      body: String,
+      movies: null,
+      ratingValue: null,
       newText: this.text,
     };
   },
-
   methods: {
-    addNewApiValue(v) {
-      console.log(v);
-      fetch("https://jsonplaceholder.typicode.com/posts", {
-        body: JSON.stringify({ title: this.newText, body: "test" }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          console.log(result);
-          this.getApi();
-        });
-      this.getApi();
-    },
+    fetchMovies(t) {
+      //console.log(this.$store.state.a);
 
-    getApi() {
-      fetch("https://jsonplaceholder.typicode.com/posts")
-        .then((response) => response.json())
-        .then((result) => {
-          this.listApi = result;
-        });
+      if (t) {
+        fetch(
+          "http://www.omdbapi.com/?apikey=8e38a46a&t=" + encodeURIComponent(t)
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            this.movies = result;
+            this.$store.commit("addRatings", this.movies);
+            this.$emit("event", this.movies);
+          });
+      }
     },
   },
+
   props: {
     text: {
       type: String,
-      default: "Atlal Basha",
+      default: "",
     },
   },
 };
 </script>
+
+<style lang="scss"></style>
+
+<!-- <p>computed function: "{{ initials }}"</p>
+    <p>watch function: "{{ newText }}"</p> -->
+
+<!-- <dl v-if="movies">
+      <li v-for="item in movies.data.movies" :key="item.id">
+        <dt>{{ item.title }}</dt>
+        <img :src="item.medium_cover_image" alt="" srcset="" />
+        <br />
+      </li>
+    </dl> -->

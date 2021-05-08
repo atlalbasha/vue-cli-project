@@ -3,6 +3,7 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
+import VueOffline from "vue-offline";
 
 // Vue.config.productionTip = false
 
@@ -15,14 +16,16 @@ import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 // sass
 import "./main.scss";
 
-import './registerServiceWorker'
+import "./registerServiceWorker";
 
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
+Vue.use(VueOffline);
 
 // Vue
 new Vue({
   router,
   store,
+
   render: (h) => h(App),
 }).$mount("#app");
