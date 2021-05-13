@@ -2,7 +2,7 @@
   <div id="app">
     <div id="nav">
       <b-icon icon="hexagon"></b-icon> |
-      <router-link to="/home">Home</router-link> |
+      <router-link to="/home/">Home</router-link> |
       <router-link to="/about">Watch Me</router-link> |
       <router-link to="/contact">Contact</router-link>
     </div>
