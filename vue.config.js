@@ -4,7 +4,7 @@ module.exports = {
       background_color: "seashell",
     },
     name: "Movies Home",
-    themeColor: "b4654a",
+    themeColor: "LightSalmon",
 
     workboxOptions: {
       runtimeCaching: [
@@ -13,7 +13,7 @@ module.exports = {
           options: {
             networkTimeoutSeconds: 5,
           },
-          urlPattern: " http://www.omdbapi.com/?i=tt3896198&apikey=8e38a46a",
+          urlPattern: /^https:\/\/www\.omdbapi\.com\/\?apikey=8e38a46a&t=.*$/,
         },
       ],
     },

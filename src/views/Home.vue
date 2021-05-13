@@ -5,7 +5,8 @@
   </div> -->
 
   <div>
-    <HomeComponent @event="showError"></HomeComponent>
+    <HomeComponent @event="showError" text=""></HomeComponent>
+
     <h3>{{ Error }}</h3>
   </div>
 </template>

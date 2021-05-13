@@ -2,19 +2,17 @@
   <div id="app">
     <div id="nav">
       <b-icon icon="hexagon"></b-icon> |
-      <router-link to="/home/:movie">Home</router-link> |
-      <router-link to="/about">About</router-link> |
+      <router-link to="/home">Home</router-link> |
+      <router-link to="/about">Watch Me</router-link> |
       <router-link to="/contact">Contact</router-link>
     </div>
     <router-view />
     <br />
 
     <footer>
-      <hr
-        style="width:30%; height:2px;border-width:0;color:#fa8072;background-color:#fa8072"
-      />
+      <hr />
       <h6>Coded by Atlal Basha</h6>
-      <a href="atlal.basha@iths.se">atlal.basha@iths.se</a>
+      <p>atlal.basha@iths.se</p>
     </footer>
   </div>
 </template>
@@ -39,5 +37,13 @@
 
 #nav a.router-link-exact-active {
   color: #fa8072;
+}
+
+hr {
+  width: 20%;
+  height: 2px;
+  border-width: 0;
+  color: #fa8072;
+  background-color: #fa8072;
 }
 </style>

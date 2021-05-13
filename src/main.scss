@@ -1,13 +1,13 @@
 // Bootstrap body background
 $body-bg: rgba(0, 0, 0, 0.9);
 
-// Bootstrap body foreground
+// body foreground
 $body-color: seashell;
 
-// Bootstrap theme colors
+//  theme colors
 $theme-colors: (
   "primary": #b4654a,
-  "secondary": #157a6e,
+  "secondary": SteelBlue,
 );
 
 // Sass imports (The variables need to be set prior to importing)

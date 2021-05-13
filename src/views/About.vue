@@ -16,7 +16,7 @@ export default {
 </script>
 
 /* scss */
-<style lang="scss">
+<style lang="scss" scoped>
 $border-color: lightsalmon;
 
 /* #app {

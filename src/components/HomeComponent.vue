@@ -5,7 +5,7 @@
       Home
     </h1>
 
-    <hr />
+    <br />
     <b-form inline class="d-flex justify-content-center">
       <b-form-input
         v-model="newText"
@@ -17,17 +17,23 @@
         >Search</b-button
       >
     </b-form>
-    <hr />
+    <br />
     <!--   <p>computed function: "{{ initials }}"</p>
     <p>watch function: "{{ newText }}"</p> -->
 
     <div v-if="movies">
       <div v-if="movies.Response === 'True'">
-        <hr />
-        <img :src="movies.Poster || 'favicon.ico'" />
+        <br />
+        <img :src="movies.Poster" />
         <i class="far fa-hexagon"></i>
-        <hr />
+        <br />
+
         <h3>{{ movies.Title }}</h3>
+        <p>{{ movies.Plot }}</p>
+
+        <b-button :disabled="isActive" variant="danger" @click="add()"
+          >Favorit <b-icon :icon="icon"></b-icon
+        ></b-button>
 
         <span v-for="movie in movies.Ratings" :key="movie.Source">
           <p>Ratings Source: {{ movie.Source }} {{ movie.Value }}</p>
@@ -38,7 +44,8 @@
           variant="danger"
           id="rating-inline"
           inline
-          :value="movies.imdbRating / 2"
+          :value="movies.imdbRating"
+          stars="10"
           readonly
         ></b-form-rating>
         <p class="mt-2">IMDB Rating: {{ movies.imdbRating }}</p>
@@ -47,19 +54,22 @@
         <p>Runtime: {{ movies.Runtime }}</p>
         <p>Genre: {{ movies.Genre }}</p>
         <p>Actors: {{ movies.Actors }}</p>
-        <p>Plot: {{ movies.Plot }}</p>
+
         <p>Language: {{ movies.Language }}</p>
         <p>Awards: {{ movies.Awards }}</p>
 
         <!-- Rating -->
         <div>
-          <label for="rating-inline">Rate This Film: {{ ratingValue }}</label>
+          <label for="rating-inline"
+            >Rate This Film: {{ $store.state.rateMovie }}</label
+          >
           <br />
           <b-form-rating
             variant="danger"
             id="rating-inline"
             inline
-            v-model="ratingValue"
+            v-model="$store.state.rateMovie"
+            stars="10"
           ></b-form-rating>
           <p class="mt-2">Your Rating</p>
         </div>
@@ -74,46 +84,69 @@
 <script>
 export default {
   watch: {
-    ratingValue() {
-      this.$store.commit("addRatings", this.ratingValue);
-      return this.$store.state.rateMovie;
-    },
-    newText() {
-      // console.log(` ${this.newText} `);
+    $route() {
+      this.fetchMovies(this.$route.params.movie);
     },
   },
   computed: {
-    initials() {
-      return this.$store.state.rateMovie;
-      /* this.newText
-        .split(" ") // ['Atlal', 'Basha']
-        .map((name) => name.charAt(0)) // ['A', 'B']
-        .join("."); // 'A.B' */
+    rateMovie: {
+      get() {
+        return this.$store.state.rateMovie;
+      },
+      set(rateMovie) {
+        this.$store.commit("addRatings", rateMovie);
+      },
+    },
+    myVaf: {
+      get() {
+        return this.$store.state.myVaf.length;
+      },
     },
   },
   created() {
-    this.fetchMovies();
+    this.fetchMovies(this.$route.params.movie);
   },
   data() {
     return {
+      icon: "heart",
       movies: null,
-      ratingValue: null,
+      isActive: null,
       newText: this.text,
+      movie: this.$route.params.movie,
     };
   },
-  methods: {
-    fetchMovies(t) {
-      //console.log(this.$store.state.a);
 
-      if (t) {
-        fetch(
-          "http://www.omdbapi.com/?apikey=8e38a46a&t=" + encodeURIComponent(t)
-        )
-          .then((response) => response.json())
-          .then((result) => {
-            this.movies = result;
-            this.$store.commit("addRatings", this.movies);
+  methods: {
+    add() {
+      this.isActive = true;
+      this.icon = "heart-fill";
+      console.log("added");
+      this.$store.commit("addVaf", this.movies);
+    },
+    fetchMovies(movie) {
+      this.isActive = false;
+      this.icon = "heart";
+      this.$store.state.rateMovie = 0;
+      const axios = require("axios");
+      if (movie) {
+        axios
+          .get(
+            "https://www.omdbapi.com/?apikey=8e38a46a&t=" +
+              encodeURIComponent(movie)
+          )
+          .then((response) => {
+            this.movies = response.data;
+
             this.$emit("event", this.movies);
+            console.log("push");
+            if (this.$route.path !== "/home/" + movie) {
+              this.$router.push({ path: "/home/" + movie }).catch((error) => {
+                console.log(error);
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
           });
       }
     },
@@ -122,21 +155,9 @@ export default {
   props: {
     text: {
       type: String,
-      default: "",
     },
   },
 };
 </script>
 
 <style lang="scss"></style>
-
-<!-- <p>computed function: "{{ initials }}"</p>
-    <p>watch function: "{{ newText }}"</p> -->
-
-<!-- <dl v-if="movies">
-      <li v-for="item in movies.data.movies" :key="item.id">
-        <dt>{{ item.title }}</dt>
-        <img :src="item.medium_cover_image" alt="" srcset="" />
-        <br />
-      </li>
-    </dl> -->
