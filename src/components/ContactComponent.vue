@@ -35,7 +35,7 @@
       You are online
     </div>
     <br />
-    <p>contact to me for more support: atlal.basha@iths.se</p>
+    <p>Contact me for more support: atlal.basha@iths.se</p>
   </div>
 </template>
 

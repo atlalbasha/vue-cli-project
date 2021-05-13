@@ -138,8 +138,8 @@ export default {
             this.movies = response.data;
 
             this.$emit("event", this.movies);
-            console.log("push");
-            if (this.$route.path !== "/home/") {
+
+            if (this.$route.path !== "/home/" + movie) {
               this.$router.push({ path: "/home/" + movie }).catch((error) => {
                 console.log(error);
               });
