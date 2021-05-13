@@ -13,7 +13,7 @@ module.exports = {
           options: {
             networkTimeoutSeconds: 5,
           },
-          urlPattern: /^https:\/\/www\.omdbapi\.com\/\?apikey=8e38a46a&t=.*$/,
+          urlPattern: /^http:\/\/www\.omdbapi\.com\/\?apikey=8e38a46a&t=.*$/,
         },
       ],
     },

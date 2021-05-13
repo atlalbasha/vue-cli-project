@@ -131,7 +131,7 @@ export default {
       if (movie) {
         axios
           .get(
-            "https://www.omdbapi.com/?apikey=8e38a46a&t=" +
+            "http://www.omdbapi.com/?apikey=8e38a46a&t=" +
               encodeURIComponent(movie)
           )
           .then((response) => {
